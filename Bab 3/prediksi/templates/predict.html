@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+        <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+ <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+ <link rel="stylesheet" type="text/css" href="js/bootstrap.min.js">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <title>Prediksi</title>
+    <link href="{% static 'logo.png' %}" rel="shortcut icon">
+
+<style>
+    body{
+	background: rgb(213, 213, 231);
+	
+}
+</style>
+
+</head>
+
+<body>
+
+    
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-transparan fixed-top" id="mainNav">
+    <div class="container-fluid">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center bg-gray-900" href="http://127.0.0.1:8000/prediksi/dashboard/">
+        <div class="sidebar-brand-icon rotate-n-0">
+          <img src="{% static 'logo.png' %}" height="30"></img>
+        </div>
+        <div class="sidebar-brand-text mx-3 text-dark"><b>Prediksi Pengiriman Barang</b></div>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <a class="nav-link active text-dark"  aria-current="page" href="predict.html">Prediksi</a>
+        <a class="nav-link active text-dark"  aria-current="page" href="chart.html">Chart</a>
+        <a class="nav-link active text-dark"  aria-current="page" href="http://127.0.0.1:8000/view">Data Pengiriman Barang</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <!-- <a class="dropdown-item" href="http://127.0.0.1:8000/shipment_received">Shipment Received</a>
+              <a class="dropdown-item" href="http://127.0.0.1:8000/arrived">Arrived</a> -->
+              <!-- <div class="dropdown-divider"></div> -->
+              <a class="dropdown-item" href="http://127.0.0.1:8000/type">Type</a>
+              <a class="dropdown-item" href="http://127.0.0.1:8000/market">Market</a>
+              <a class="dropdown-item" href="http://127.0.0.1:8000/shipping_mode">Shipping Mode</a>
+              <a class="dropdown-item" href="http://127.0.0.1:8000/delivery_status">Delivery Status</a>
+              <!-- <a class="dropdown-item" href="http://127.0.0.1:8000/shipping_day">Shipping Day</a> -->
+            </div>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link text-light float-center" href="{% url 'logout' %}">Logout</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+</nav>
+
+      <br><br><br><br>
+
+    <div class="container">
+
+		<!-- Outer Row -->
+		<div class="row justify-content-center">
+
+			<div class="col-sm-12 col-md-9">
+
+				<div class="card o-hidden border-0 shadow-lg my-5 bg-dark">
+					<div class="card-body p-0">
+						<!-- Nested Row within Card Body -->
+						<div class="row">
+							<div class="col-lg-12">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="p-5">
+									<div class="text-center">
+                     <div class="sidebar-brand-icon">
+                        <i class="fas fa-warehouse"></i>
+                          </div> 
+                              <h1 class="h4 text-light mb-4"><b>PREDIKSI RESIKO KETERLAMBATAN PENGIRIMAN BARANG</b></h1>
+                                <div class="sidebar-brand-text mx-3 text-light"> Silahkan inputkan data dalam bentuk angka </div>
+							                    	<br>	
+                                </div>
+                                {% block content %}
+									               <form class="user" method="POST" action="result">
+                                        {% csrf_token %}
+								             		<div class="form-group">
+
+                                  <select class="form-control mb-3" name="Type" id="Type">
+                                    <option value="">Type</option>
+                                    {% for i in types %}
+                                      <option value="{{ i.id }}">{{ i.nama}}</option>
+                                    {% endfor %}
+                                  </select>
+
+                                   <select class="form-control mb-3" name="Days_for_shipping_real" id="Days_for_shipping_real">
+                                    <option value="">Days for shipping real</option>
+                                    {% for i in Days_for_shipping_reals %}
+                                      <option value="{{ i.id }}">{{ i.tanggal}}</option>
+                                    {% endfor %}
+                                  </select> 
+
+                                  <select class="form-control mb-3" name="Days_for_shipment_scheduled" id="Days_for_shipment_scheduled">
+                                    <option value="">Days for shipment scheduled</option>
+                                    {% for i in Days_for_shipment_scheduleds %}
+                                      <option value="{{ i.id }}">{{ i.tanggal}}</option>
+                                    {% endfor %}
+                                  </select>
+										         	<!-- <input type="float" name="Type" id="Type" class="form-control"  placeholder="Inputkan type" autocomplete="off" required ><br> -->
+                               <!-- <input type="float" name="shipment_received" id="shipment_received" class="form-control"  placeholder="Inputkan shipment_received" autocomplete="off" required ><br>
+                               <input type="float" name="arrived" id="arrived" class="form-control"  placeholder="Inputkan arrived" autocomplete="off" required ><br> -->
+                               <!-- <input type="integer" name="Days_for_shipping_real" id="Days_for_shipping_real" class="form-control"  placeholder="Inputkan Hari Pengiriman Sebenarnya" autocomplete="off" required ><br> -->
+                               
+                               <!-- <input type="integer" name="Days_for_shipment_scheduled" id="Days_for_shipment_scheduled" class="form-control"  placeholder="Inputkan Hari Pengiriman (dijadwalkan)" autocomplete="off" required ><br> -->
+                               <input type="integer" name="Sales_per_customer" id="Sales_per_customer" class="form-control"  placeholder="Inputkan Sales per customer" autocomplete="off" required ><br>
+                               <input type="integer" name="latitude" id="latitude" class="form-control"  placeholder="Inputkan latitude" autocomplete="off" required ><br>
+                               <input type="integer" name="longitude" id="longitude" class="form-control"  placeholder="Inputkan longitude" autocomplete="off" required ><br>
+                               <input type="integer" name="Benefit_per_order" id="Benefit_per_order" class="form-control"  placeholder="Inputkan Benefit per order" autocomplete="off" required ><br>
+                               <!-- <input type="integer" name="Shipping_mode" id="Shipping_mode" class="form-control"  placeholder="Inputkan Tipe Pengiriman" autocomplete="off" required ><br> -->
+                               
+                               <select class="form-control mb-3" name="Shipping_mode" id="Shipping_mode">
+                                <option value="">Shipping Mode</option>
+                                {% for i in shipping_modes %}
+                                  <option value="{{ i.id }}">{{ i.nama}}</option>
+                                {% endfor %}
+                              </select> 
+
+                              <select class="form-control mb-3" name="Market" id="Market">
+                                <option value="">Market</option>
+                                {% for i in markets %}
+                                  <option value="{{ i.id }}">{{ i.nama}}</option>
+                                {% endfor %}
+                              </select>
+
+                               <select class="form-control mb-3" name="Delivery_status" id="Delivery_status">
+                                <option value="">Delivery Status</option>
+                                {% for i in deliveryStatuss %}
+                                  <option value="{{ i.id }}">{{ i.nama}}</option>
+                                {% endfor %}
+                              </select>
+                              <select class="form-control mb-3" name="Shipping_day" id="Shipping_day">
+                                <option value="">Shipping Day</option>
+                                {% for i in shipping_days %}
+                                  <option value="{{ i.id }}">{{ i.tanggal}}</option>
+                                {% endfor %}
+                              </select>
+
+                              <select class="form-control mb-3" name="Shipping_month" id="Shipping_month">
+                                <option value="">Shipping month</option>
+                                {% for i in shipping_months %}
+                                  <option value="{{ i.id }}">{{ i.bulan}}</option>
+                                {% endfor %}
+                              </select>
+                              
+                              <select class="form-control mb-3" name="Shipping_year" id="Shipping_year">
+                                <option value="">Shipping year</option>
+                                {% for i in shipping_years %}
+                                  <option value="{{ i.id }}">{{ i.tahun}}</option>
+                                {% endfor %}
+                              </select>
+
+                               <!-- <input type="integer" name="Market" id="Market" class="form-control"  placeholder="Inputkan Market" autocomplete="off" required ><br> -->
+                               <!-- <input type="integer" name="Shipping_day" id="Delivery_status" class="form-control"  placeholder="Inputkan Delivery Status" autocomplete="off" required ><br> -->
+                               <!-- <input type="integer" name="Shipping_day" id="Shipping_day" class="form-control"  placeholder="Inputkan shipping day" autocomplete="off" required ><br> -->
+                               <!-- <input type="integer" name="Shipping_month" id="Shipping_month" class="form-control"  placeholder="Inputkan shipping month" autocomplete="off" required ><br> -->
+                               <!-- <input type="integer" name="Shipping_year" id="Shipping_year" class="form-control"  placeholder="Inputkan shipping year" autocomplete="off" required ><br> -->
+                              </div>
+
+									             	<div class="form-row">
+									          	<div class="form-group col-md-12">
+										<input type="submit" value="Lakukan Prediksi" class="btn btn-block bg-success text-light">
+										</div>
+									</div>
+                   {% endblock %}
+									</form>
+                   {{ result }}
+                    <br>
+                    <div class="float-right">
+                        <a href="http://127.0.0.1:8000/prediksi/dashboard/" class="btn btn-secondary btn-sm">Kembali</a>
+                      </div>
+								</div>
+							</div>							
+						</div>      
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+   <br>
+
+    <footer class="bg-dark text-center text-white" style="background-color: rgba(0, 0, 0, 0.2);">
+      <!-- Grid container -->
+      <!-- <div class="container p-4 pb-0"> -->
+  
+      <!-- Copyright -->
+      <div class="bg-dark container p-4 text-center" >
+        © 2023 Copyright:
+        <a class="text-white" href="">Eni</a>
+      </div>
+      <!-- Copyright -->
+  
+  <!-- </div> -->
+  <!-- Grid container -->
+    </footer>
+
+   
+</body>
+</html>
